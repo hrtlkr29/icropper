@@ -1,0 +1,293 @@
+<div class="error picker-content" draggable="true" [ngStyle]="{'display' : urlError ? 'block' : 'none'}">
+    <h4 style="color: white;">There was some error with the url, please try again!</h4>
+  </div>
+<div class="loader text-center" id="loader" hidden [ngStyle]="{'display' : urlError ? 'block' : 'none'}">
+  <div style="size: 200px;">
+    <span class="loader__dot dot">.</span>
+    <span class="loader__dot dot">.</span>
+    <span class="loader__dot dot">.</span>
+    <span class="loader__dot dot">.</span>
+    <span class="loader__dot dot">.</span>
+  </div>
+  <div>
+    <p style="font-size: 17px">Your images will be ready in just a few second</p>
+  </div>
+</div>
+<div class="container" id="afterLoad" hidden [ngStyle]="{'display' : urlError ? 'block' : 'none'}">
+  <div class="section" style="height: 900px;">
+    <div>
+      <span class="step" style="vertical-align: middle">
+        <span style="font-size: 24px; vertical-align: middle" class="text-center">1</span>
+      </span>
+      <h3 style="display: inline; vertical-align: middle">
+        <span>Adjust Image (Optional)</span>
+      </h3>
+    </div>
+    <div style="margin:0px auto; max-width: 1000px;">
+      <div class="adjustmentMenu">
+        <button class="adjustment btn" id="crop" (click)='cropBtn()'>
+          <svg baseProfile="tiny" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" class="styles__icon__QkKgv">
+            <path fill="#EBEFF0" d="M10.36 10.36h15.426L10.36 26.035"></path>
+            <path fill="none" stroke="#5D615F" stroke-miterlimit="10" d="M2 10.36h24.035v24.034m8.36-8.36H10.36V2"></path>
+            <path fill="none" stroke="#5D615F" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-dasharray="4 4"
+              d="M11 25.147L33.146 3"></path>
+          </svg>
+          <div>Crop</div>
+        </button>
+        <button class="adjustment btn" id="flip" (click)='flipBtn()'>
+          <svg baseProfile="tiny" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" class="styles__icon__QkKgv">
+            <path fill="#EBEEEF" stroke="#5D615F" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M3 7l10.312 11.18L3 29.36z"></path>
+            <path fill="none" stroke="#5D615F" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-dasharray="5 4.5"
+              d="M18 2v32.622"></path>
+            <path fill="none" stroke="#5D615F" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M33.312 7L23 18.18l10.312 11.18z"></path>
+          </svg>
+          <div>Flip</div>
+        </button>
+        <button class="adjustment btn" id="rotate" (click)='rotateBtn()'>
+          <svg baseProfile="tiny" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" class="styles__icon__QkKgv">
+            <path fill="none" stroke="#636768" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M15.797 6.333a13.818 13.818 0 0 1 2.448-.217c7.593 0 13.746 6.154 13.746 13.745 0 7.593-6.152 13.747-13.745 13.747-7.59 0-13.745-6.154-13.745-13.746 0-2.597.72-5.027 1.974-7.1"></path>
+            <path fill="#EBEEEF" stroke="#636768" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M14.977 6.306l6.538-4.664-.098 2.507-.207 5.33-.103 2.637-6.13-5.81"></path>
+          </svg>
+          <div>Rotate</div>
+        </button>
+        <div class="sub-menu" id="sub-menu-crop" [ngStyle]="{'display' : cropFlag ? 'inline-flex' : 'none'}">
+          <div class="sub-menu-section">
+            <span class="input-container">
+              <span class=" sub-menu-input">
+                <span class="prefix">W</span>
+                <input type="number" id="wInput" step="1" value="0" style="width:100px; 
+                  border-width: 0px;
+                  padding-left: 10px;
+                  border-color: transparent;" [(ngModel)]='widthInput' (change)='wInput()' />
+              </span>
+            </span>
+            <button class="btn" style="padding: 0; margin-left: 4px; margin-right: 4px;">
+              <svg [ngStyle]="{'display' : ratioFlag ? 'none' : 'flex'}" baseProfile="tiny" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36">
+                <path fill="none" stroke="#747474" stroke-miterlimit="10" d="M27.5 26.325a.768.768 0 0 1-.768.768H15.267a.768.768 0 0 1-.767-.768V17.86c0-.424.344-.768.767-.768h11.465c.424 0 .768.343.768.768v8.465z"></path>
+                <path fill="none" stroke="#747474" stroke-miterlimit="10" d="M7.5 17.593v-2.561c0-2.503 1.768-4.532 4.269-4.532 2.502 0 4.731 2.029 4.731 4.532v2.561"></path>
+                <circle fill="none" stroke="#747474" stroke-linecap="round" stroke-miterlimit="10" cx="21" cy="21.501" r="1.201"></circle>
+                <path fill="none" stroke="#747474" stroke-linecap="round" stroke-miterlimit="10" d="M21 22.703v1.861"></path>
+              </svg>
+              <svg  [ngStyle]="{'display' : ratioFlag ? 'flex' : 'none'}" baseProfile="tiny" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36">
+                <path fill="none" stroke="#747474" stroke-miterlimit="10" d="M24.5 26.325a.768.768 0 0 1-.768.768H12.267a.768.768 0 0 1-.767-.768V17.86c0-.424.344-.768.767-.768h11.465c.424 0 .768.343.768.768v8.465z"></path>
+                <path fill="none" stroke="#747474" stroke-miterlimit="10" d="M13.5 17.593v-2.561c0-2.503 1.768-4.532 4.269-4.532 2.502 0 4.731 2.029 4.731 4.532v2.561"></path>
+                <circle fill="none" stroke="#747474" stroke-linecap="round" stroke-miterlimit="10" cx="18" cy="21.501"
+                  r="1.201"></circle>
+                <path fill="none" stroke="#747474" stroke-linecap="round" stroke-miterlimit="10" d="M18 22.703v1.861"></path>
+              </svg>
+            </button>
+            <span class="input-container">
+              <span class=" sub-menu-input">
+                <span class="prefix">H</span>
+                <input type="number" id="hInput" step="1" value="0" style="width:100px; 
+                    border-width: 0px;
+                    padding-left: 10px;
+                    border-color: transparent;" [(ngModel)]='heightInput' (change)='hInput()' />
+              </span>
+            </span>
+          </div>
+          <div class="sub-menu-section text-center">
+            <button class="btn btn-square-gray" (click) = "OriginRatio()">
+              Original
+            </button>
+            <button class="btn btn-square-gray" (click) = "FourThreeRatio()">
+              4:3
+            </button>
+            <button class="btn btn-square-gray" (click) = "SixteenNineRatio()">
+              16:9
+            </button>
+            <button class="btn btn-square-gray" (click) = "OneOneRatio()">
+              1:1
+            </button>
+          </div>
+          <div class="sub-menu-section pull-right">
+            <button class="btn-square-blue btn" style="margin-right: 10px;" id="apply" (click)='applyBtn()' [disabled]="isCropped">Apply</button>
+            <button class="btn-square-blue btn" id="btn-reset" (click)='resetBtn()'>Reset</button>
+          </div>
+          <div class="sub-menu-section"></div>
+          <div class="sub-menu-section"></div>
+        </div>
+      </div>
+      <div class="sub-menu" id="sub-menu-rotate" [ngStyle]="{'display' : rotateFlag ? 'flex' : 'none'}">
+        <button class="adjustment btn" style="width: 50%;" id="rotate-left" (click)='rotateRight()'>
+          <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" class="styles__inlineIcon__3URt7">
+            <path fill="none" stroke="#636768" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M30.018 12.762a13.673 13.673 0 0 1 1.974 7.1c0 7.592-6.155 13.745-13.745 13.745-7.593 0-13.745-6.153-13.745-13.746 0-7.59 6.153-13.744 13.746-13.744.835 0 1.653.074 2.448.217"></path>
+            <path fill="#EBEEEF" stroke="#636768" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M21.516 6.306l-6.13 5.81-.104-2.637-.207-5.33-.1-2.508 6.54 4.664"></path>
+          </svg>
+          <div>Rotate 90 CW</div>
+        </button>
+        <button class="adjustment btn" style="width: 50%;" id="rotate-right" (click)='rotateLeft()'>
+          <svg baseProfile="tiny" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" class="styles__inlineIcon__3URt7">
+            <path fill="none" stroke="#636768" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M15.797 6.333a13.818 13.818 0 0 1 2.448-.217c7.593 0 13.746 6.154 13.746 13.745 0 7.593-6.152 13.747-13.745 13.747-7.59 0-13.745-6.154-13.745-13.746 0-2.597.72-5.027 1.974-7.1"></path>
+            <path fill="#EBEEEF" stroke="#636768" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M14.977 6.306l6.538-4.664-.098 2.507-.207 5.33-.103 2.637-6.13-5.81"></path>
+          </svg>
+          <div>Rotate 90 CCW</div>
+        </button>
+      </div>
+      <div class="sub-menu" id="sub-menu-flip" [ngStyle]="{'display' : flipFlag ? 'flex' : 'none'}">
+        <button class="adjustment btn" style="width: 50%;" id="flip-hori" (click)='flipDirection("horizontal")'>
+          <svg baseProfile="tiny" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" class="styles__inlineIcon__3URt7">
+            <path fill="#EBEEEF" stroke="#5D615F" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M3 7l10.312 11.18L3 29.36z"></path>
+            <path fill="none" stroke="#5D615F" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-dasharray="5 4.5"
+              d="M18 2v32.622"></path>
+            <path fill="none" stroke="#5D615F" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M33.312 7L23 18.18l10.312 11.18z"></path>
+          </svg>
+          <div>Flip Horizontally</div>
+        </button>
+        <button class="adjustment btn" style="width: 50%;" id="flip-ver" (click)='flipDirection("vertical")'>
+          <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" class="styles__inlineIcon__3URt7">
+            <path fill="#EBEEEF" stroke="#5D615F" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M29.467 3.155l-11.18 10.312L7.107 3.155h22.36z"></path>
+            <path fill="none" stroke="#5D615F" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-dasharray="5 4.5"
+              d="M34.467 18.155H1.845"></path>
+            <path fill="none" stroke="#5D615F" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M29.467 33.467l-11.18-10.312-11.18 10.312h22.36z"></path>
+          </svg>
+          <div>Flip Vertically</div>
+        </button>
+      </div>
+      <div class="adjustmentEditor" id="image-wrapper">
+          <img src="" id="image">
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <button class=" btn-primary btn-square-blue pull-right" id="resize-image" style="margin-top: 10vh" (click)='resizeBtn()'>Save Image</button>
+  </div>
+</div>
+<div class="container" id="final" hidden>
+  <div class="image-section">
+    <h3 class="styles__verticalCenterChildren__130I3">
+      <svg style="vertical-align: middle; margin-right: 10px" baseProfile="tiny" xmlns="http://www.w3.org/2000/svg" width="32"
+        height="32" viewBox="0 0 36 36" class="styles__rightMargin__3eC4O">
+        <path fill="#A4D06D" d="M16.688 25.728l-6.61-6.61 2.152-2.152 3.902 3.902 6.08-9.758 2.583 1.61"></path>
+        <path fill="#A4D06D" d="M18 35.875C8.144 35.875.125 27.855.125 18S8.145.125 18 .125 35.875 8.145 35.875 18 27.855 35.875 18 35.875zm0-33.468C9.402 2.407 2.407 9.402 2.407 18c0 8.598 6.995 15.593 15.593 15.593 8.598 0 15.593-6.995 15.593-15.593 0-8.598-6.995-15.593-15.593-15.593z"></path>
+      </svg>Save Your Image</h3>
+    <div id="put-final-image-here" style="margin-bottom: 10px">
+    </div>
+    <div class="section" id="table-section">
+      <div class="table-responsive">
+        <table class="table-bordered">
+          <thead>
+            <colgroup>
+              <col style="width:50px; height: 50px;" />
+              <col style="width:30px; height: 50px" />
+              <col style="width:30px; height: 50px" />
+              <col style="width:30px; height: 50px" />
+              <col style="width:30px; height: 50px" />
+            </colgroup>
+          </thead>
+          <tbody>
+            <tr>
+              <th style="height: 70px; width: 100px; background: #f4f7f7;" class="text-center">File Name</th>
+              <th style="height: 70px; width: 100px; background: #f4f7f7;" class="text-center">Original Size</th>
+              <th style="height: 70px; width: 100px; background: #f4f7f7;" class="text-center">Original (px)</th>
+              <th style="height: 70px; width: 100px; background: #f4f7f7;" class="text-center">New (px)</th>
+            </tr>
+            <tr>
+              <td style="height: 50px" class="text-center">{{fileName}}</td>
+              <td style="height: 50px" class="text-center">{{originSize}}</td>
+              <td style="height: 50px" class="text-center">{{originalPx}}</td>
+              <td style="height: 50px" class="text-center">{{newPx}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        Note: Images will be automatically removed from servers after 24 hrs.
+      </p>
+    </div>
+    <div class="section">
+      <ins class="adsbygoogle styles__bannerAd__1WTrt" data-ad-client="ca-pub-7908993773401181" data-ad-format="auto" data-ad-slot="7634290200"
+        data-adsbygoogle-status="done" style="height: 60px;">
+        <ins id="aswift_1_expand" style="display:inline-table;border:none;height:60px;margin:0;padding:0;position:relative;visibility:visible;width:684px;background-color:transparent;">
+          <ins id="aswift_1_anchor" style="display:block;border:none;height:60px;margin:0;padding:0;position:relative;visibility:visible;width:684px;background-color:transparent;">
+          </ins>
+        </ins>
+      </ins>
+      <div class="button-section" style="position: absolute;">
+        <button class=" btn-primary btn-square-blue pull-right" style="margin: 10px" id="saveToDisk" (click)='saveBtn()'>Save to Disk</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container" id="homepage">
+  <div class="center-section">
+    <h2>Crop and Resize Images Online</h2>
+    <p> Crop, resize, flip, or rotate an image by uploading it below</p>
+  </div>
+  <div class="selection-box">
+    <div class="barTab">
+      <div class="nav">
+        <div class="tab" id="firstTab" (click)='firstTabBtn()' [ngClass]="checkSecondTab() ? 'tab' : 'tab-onSelect'">
+          <!-- <a [routerLink]="['/main/image-crop-upload']"> -->
+          Computer
+          <!-- </a> -->
+        </div>
+        <div class="tab" id="secondTab" (click)='secondTabBtn()' [ngClass]="checkSecondTab() ? 'tab-onSelect' : 'tab'">
+          URL
+        </div>
+      </div>
+      <div class="picker-content" id="picker-content" draggable="true">
+        <div id="div1" [ngStyle]="{'display' : secondTabFlag ? 'none' : 'block'}">
+          <button id="btn-choose-file" class="btn btn-success btn-square-blue" [hidden]="check" (click)='chooseFile()'>Choose an Image to Resize</button>
+          <input type="file" accept="image/*" autocomplete="off" style="display: none" id="input" draggable="true" (change)='changeInputToggle()'>
+        </div>
+        <div id="div2" [ngStyle]="{'display' : secondTabFlag ? 'block' : 'none'}">
+          <label class="form-label" style="display: flex; font-size: 12px; font-weight: bold">INSERT AN IMAGE URL HERE</label>
+          <div>
+            <label class="input-field">
+              <input type="url" placeholder="http://" name="url" style="border: 0px" [(ngModel)]="url" id="inputUrl">
+              <button class="btn btn-success btn-square-blue pull-right" style="margin-left:auto;" id="resize" (click)='urlButton()'>Resize</button>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="progress" id="progress" hidden>
+      <div class="progress-bar progress-bar-success" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width:90%">
+      </div>
+    </div>
+  </div>
+  <div class="ad">
+    <ins class="adsbygoogle styles__bannerAd__1WTrt" data-ad-client="ca-pub-7908993773401181" data-ad-format="auto" data-ad-slot="7634290200"
+      data-adsbygoogle-status="done" style="height: 90px;">
+      <ins id="aswift_1_expand" style="display:inline-table;border:none;height:90px;margin:0;padding:0;position:relative;visibility:visible;width:728px;background-color:transparent;">
+        <ins id="aswift_1_anchor" style="display:block;border:none;height:90px;margin:0;padding:0;position:relative;visibility:visible;width:728px;background-color:transparent;">
+        </ins>
+      </ins>
+    </ins>
+  </div>
+  <div class="content">
+    <div class="section">
+      <h3>What is ImageResize.org?</h3>
+      <p>Imageresize.org is a free online image resizer tool. It is fast, easy to use, and will always be free. Best of all,
+        you don’t have to install any software. To start editing your images , upload a single image to the upload box above.
+        We currently support the following image editing functions: Resize image, crop, convert and other basic image editing.</p>
+    </div>
+    <div class="two-sections">
+      <div class="section">
+        <h3>Resize Image</h3>
+        <p>Upload and choose a new size for your image. You can choose a percentage of the original size o r specify exact pixel
+          dimensions. Resizing your images all ows them to be displayed without stretching.</p>
+      </div>
+      <div class="section">
+        <h3>Online Image Editor</h3>
+        <p>With our image editor, you can perform the following actions: crop photo, flip and rotate an image, or add image
+          filters. You can also adjust image’s brightness, contrast, and saturation.</p>
+      </div>
+    </div>
+    <div class="two-sections">
+      <div class="section">
+        <h3>
+          Compress Images
+        </h3>
+        <p>While our image resizer allows basic image compression, you may want to use our
+          <a href="/compress-images">advanced png and jpeg compressor</a> to drastically reduce image size while retaining image quality.</p>
+      </div>
+      <div class="section">
+        <h3>Image Converter</h3>
+        <p>Need to convert png to jpg or jpg to png? Our image editor allows you to convert your images to any of the following
+          file types; jpg, png, gif, and bmp.</p>
+      </div>
+    </div>
+  </div>
+</div>

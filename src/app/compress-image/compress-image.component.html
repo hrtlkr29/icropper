@@ -1,0 +1,137 @@
+<div class="error picker-content" draggable="true" [ngStyle]="{'display' : urlError ? 'block' : 'none'}">
+    <h4 style="color: white;">There was some error with the url, please try again!</h4>
+  </div>
+<div class="container" id="homepage" [ngStyle]="{'display' : urlError ? 'none' : 'block'}">
+  <div class="center-section">
+    <h2>Easily Compress Images Online</h2>
+    <p> Advanced PNG and JPEG compressor for reducing file size without quality loss</p>
+  </div>
+  <div class="selection-box">
+    <div class="barTab">
+      <div class="nav">
+        <div class="tab" id="firstTab" (click)='firstTabBtn()' [ngClass]="checkSecondTab() ? 'tab' : 'tab-onSelect'">
+          <!-- <a [routerLink]="['/main/image-crop-upload']"> -->
+          Computer
+          <!-- </a> -->
+        </div>
+        <div class="tab" id="secondTab" (click)='secondTabBtn()' [ngClass]="checkSecondTab() ? 'tab-onSelect' : 'tab'">
+          URL
+        </div>
+      </div>
+      <div class="picker-content" id="picker-content" draggable="true">
+        <div id="div1" [ngStyle]="{'display' : secondTabFlag ? 'none' : 'block'}">
+          <button id="btn-choose-file" class="btn btn-success btn-square-blue" [hidden]="check" (click)='chooseFile()'>Choose an Image to Resize</button>
+          <input type="file" accept="image/*" autocomplete="off" style="display: none" id="input" draggable="true" (change)='changeInput()'
+            multiple>
+        </div>
+        <div id="div2" [ngStyle]="{'display' : secondTabFlag ? 'block' : 'none'}">
+          <label class="form-label" style="display: flex; font-size: 12px; font-weight: bold">INSERT AN IMAGE URL HERE</label>
+          <div id="add-url-field">
+            <label class="input-field">
+              <input type="url" placeholder="http://" name="url" style="border: 0px" [(ngModel)]="url" id="inputUrl">
+            </label>
+          </div>
+          <button class="btn btn-success btn-square pull-right" style="margin-left:auto;" id="addUrls" (click)='addURLs()'>Add more URLs</button>
+        </div>
+      </div>
+      <div class="section" [ngStyle]="{'display' : proceedFlag ? 'block' : 'none'}">
+        <button class=" btn-primary btn-square-blue pull-right" id="resize-image" (click)='proceedUrl()'>Proceed to Bulk Images Resize</button>
+      </div>
+    </div>
+    <div class="progress" id="progress" hidden>
+      <div class="progress-bar progress-bar-success" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width:90%">
+      </div>
+    </div>
+  </div>
+  <br>
+  <div class="selection-box" [ngStyle]="{'display' : inputFlag ? 'block' : 'none'}">
+    <div class="table-responsive" style="width: -webkit-fill-available; overflow-x: inherit;
+           border: 2px solid #e8e9eb;">
+      <table class="table" style="width: -webkit-fill-available">
+        <thead>
+          <colgroup>
+            <col style="width:50px; height: 30px;" />
+            <col style="width:30px; height: 30px" />
+            <col style="width:30px; height: 30px" />
+            <col style="width:30px; height: 30px" />
+            <col style="width:30px; height: 30px" />
+          </colgroup>
+        </thead>
+        <tbody>
+          <tr>
+            <th style="height: 30px; width: 100px; background: #f4f7f7;" class="text-center">File Name</th>
+            <th style="height: 30px; width: 100px; background: #f4f7f7;" class="text-center">Status</th>
+            <th style="height: 30px; width: 100px; background: #f4f7f7;" class="text-center">Action</th>
+            <th style="height: 30px; width: 100px; background: #f4f7f7;" class="text-center">Size</th>
+            <th style="height: 30px; width: 100px; background: #f4f7f7;" class="text-center">New Size</th>
+            <th style="height: 30px; width: 100px; background: #f4f7f7;" class="text-center">Saved</th>
+          </tr>
+          <tr id="body-row">
+            <tr *ngFor="let file of fileNames, let i = index">
+              <td style="height: 30px" class="text-center">{{file.slice(0,7)}}</td>
+              <td style="height: 30px" class="text-center" style="color: #9ad86d;">{{status}}</td>
+              <td style="height: 30px" class="text-center" style="color: red">
+                <button class="btn" (click)="deleteRow(index)" style="padding: 0px">x</button>
+              </td>
+              <td style="height: 30px" class="text-center">{{fileSizes[i]}}</td>
+              <td style="height: 30px" class="text-center">{{resultSizes[i]}}</td>
+              <td style="height: 30px" class="text-center">{{saveList[i]}}%</td>
+            </tr>
+        </tbody>
+      </table>
+      <button style="margin-top:30px;" class=" btn-primary btn-square-blue pull-right" id="resize-image" (click)='downloadImages()' [ngStyle]="{'display' : !isFileListEmpty  ? 'block' : 'none'}">Download Images</button>
+    </div>
+    <h5 style="color: red" [ngStyle]="{'display' : isFileListEmpty ? 'block' : 'none'}">The image list is currently empty, please add images in order to proceed. </h5>
+  </div>
+  <div style="width: 40px"></div>
+  <div class="selection-box" style="margin-top:30px" [ngStyle]="{'display' : finalSession ? 'block' : 'none'}">
+
+
+  </div>
+  <div class="ad">
+    <ins class="adsbygoogle styles__bannerAd__1WTrt" data-ad-client="ca-pub-7908993773401181" data-ad-format="auto" data-ad-slot="7634290200"
+      data-adsbygoogle-status="done" style="height: 90px;">
+      <ins id="aswift_1_expand" style="display:inline-table;border:none;height:90px;margin:0;padding:0;position:relative;visibility:visible;width:728px;background-color:transparent;">
+        <ins id="aswift_1_anchor" style="display:block;border:none;height:90px;margin:0;padding:0;position:relative;visibility:visible;width:728px;background-color:transparent;">
+        </ins>
+      </ins>
+    </ins>
+  </div>
+  <div class="content">
+    <div class="section">
+      <h3>What is an Image Compressor?</h3>
+      <p>It is a free online tool provided by ImageResize.org for compressing images without losing image quality. We use the
+        latest image compression methods and intelligent algorithms to lower your image file size. Test the slider example
+        below, the compressed image on the right is 95% lighter. Can you tell the difference between the two? No problem,
+        we can’t either! JPEG compressor</p>
+    </div>
+    <div class="two-sections">
+      <div class="section">
+        <h3>JPEG compressor</h3>
+        <p>JPEG is a popular file/compression format used for storing digital images. Most JPEG files can be optimized further
+          without losing any visual image quality. Upload and compress JPEG files above to improve page load times and save
+          your bandwidth costs.</p>
+      </div>
+      <div class="section">
+        <h3>PNG compressor</h3>
+        <p>PNG compresses images while keeping original data (lossless). As a result, file size can be bigger. Our compressor
+          applies lossy algorithms, strip unwanted data, converts 24-bit color index to 8-bit. The Result is a drastically
+          lower PNG image size with the same image quality.</p>
+      </div>
+    </div>
+    <div class="two-sections">
+      <div class="section">
+        <h3>
+          Image optimization for webmasters
+        </h3>
+        <p>If you are a webmaster, you want your pages to load faster to provide the best user experience. Optimizing your images
+          will lead to faster page loading, save bandwidth, and help your website rank higher in search results.</p>
+      </div>
+      <div class="section">
+        <h3>Images optimization for consumers</h3>
+        <p>If you are a consumer or a photographer, you may want to compress your images to upload them faster. Optimized images
+          also help to stay within file size restrictions on many consumer websites.</p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,270 @@
+<div class="error picker-content" draggable="true" [ngStyle]="{'display' : urlErrorFlag ? 'block' : 'none'}">
+  <h4 style="color: white;">There was some error with the url, please try again!</h4>
+</div>
+<div class="loader text-center" id="loader" hidden>
+    <div style="size: 200px;">
+      <span class="loader__dot dot">.</span>
+      <span class="loader__dot dot">.</span>
+      <span class="loader__dot dot">.</span>
+      <span class="loader__dot dot">.</span>
+      <span class="loader__dot dot">.</span>
+    </div>
+    <div>
+      <p style="font-size: 17px">Your images will be ready in just a few second</p>
+    </div>
+  </div>
+<div class="container" [ngStyle]="{'display' : urlErrorFlag ? 'none' : 'block'}">
+  <div id="homepage">
+    <div class="center-section">
+      <h2>Batch Image Resize Tool</h2>
+      <p> Resize, compress, or convert multiple images at once</p>
+    </div>
+    <div class="selection-box" id="select-box">
+      <div class="barTab">
+        <div class="nav">
+          <div class="tab" id="firstTab" (click)='firstTabBtn()' [ngClass]="checkSecondTab() ? 'tab' : 'tab-onSelect'">
+            <!-- <a [routerLink]="['/main/image-crop-upload']"> -->
+            Computer
+            <!-- </a> -->
+          </div>
+          <div class="tab" id="secondTab" (click)='secondTabBtn()' [ngClass]="checkSecondTab() ? 'tab-onSelect' : 'tab'">
+            URL
+          </div>
+        </div>
+        <div class="picker-content" id="picker-content" draggable="true">
+          <div id="div1" [ngStyle]="{'display' : secondTabFlag ? 'none' : 'block'}">
+            <button id="btn-choose-file" class="btn btn-success btn-square-blue" [hidden]="check" (click)='chooseFile()'>Choose an Image to Resize</button>
+            <input type="file" accept="image/*" autocomplete="off" style="display: none" id="input" draggable="true" (change)='changeInput()'
+              multiple>
+          </div>
+          <div id="div2" [ngStyle]="{'display' : secondTabFlag ? 'block' : 'none'}">
+            <label class="form-label" style="display: flex; font-size: 12px; font-weight: bold">INSERT AN IMAGE URL HERE</label>
+            <div id="add-url-field">
+              <label class="input-field">
+                <input type="url" placeholder="http://" name="url"
+                 (keyup) = "onInputType()"
+                 style="border: 0px" [(ngModel)]="url" class="inputUrl">
+              </label>
+            </div>
+            <button class="btn btn-success btn-square pull-right" style="margin-left:auto;" id="addUrls" (click)='addURLs()'>Add more URLs</button>
+          </div>
+        </div>
+        <div class="section" [ngStyle]="{'display' : secondTabFlag ? 'block' : 'none'}">
+          <button class=" btn-primary btn-square-blue pull-right" id="resize-image" 
+          [disabled] = "!onKeyUp"(click)='proceedUrl()'>Proceed to Bulk Images Resize</button>
+        </div>
+      </div>
+      <div class="progress" id="progress" hidden>
+        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width:90%">
+        </div>
+      </div>
+      <div [ngStyle]="{'display' : inputFlag ? 'block' : 'none'}" class="table-responsive" style="width: -webkit-fill-available; overflow-x: inherit;
+           border: 2px solid #e8e9eb;">
+        <table class="table" style="width: -webkit-fill-available">
+          <thead>
+            <colgroup>
+              <col style="width:50px; height: 30px;" />
+              <col style="width:30px; height: 30px" />
+              <col style="width:30px; height: 30px" />
+              <col style="width:30px; height: 30px" />
+            </colgroup>
+          </thead>
+          <tbody>
+            <tr>
+              <th style="height: 30px; width: 100px; background: #f4f7f7;" class="text-center">File Name</th>
+              <th style="height: 30px; width: 100px; background: #f4f7f7;" class="text-center">Status</th>
+              <th style="height: 30px; width: 100px; background: #f4f7f7;" class="text-center">Action</th>
+              <th style="height: 30px; width: 100px; background: #f4f7f7;" class="text-center">Size</th>
+            </tr>
+            <tr id="body-row">
+              <tr *ngFor="let file of inputFiles, let i = index">
+                <td style="height: 30px" class="text-center">{{file.name.slice(0,15)}}...</td>
+                <td style="height: 30px" class="text-center">Ready</td>
+                <td style="height: 30px" class="text-center" style="color: red">
+                  <button class="btn"  (click)="deleteRow(index)">x</button>
+                </td>
+                <td style="height: 30px" class="text-center">{{file.size/1024 | number: '1.2-2'}}kB</td>
+              </tr>
+          </tbody>
+        </table>
+        <button [disabled] = "isFileListEmpty" [ngStyle]="{'display' : !isFileListEmpty ? 'block' : 'none'}" style="margin-top:30px;" class=" btn-primary btn-square-blue pull-right" id="resize-image" (click)='proceed()'>Proceed to Bulk Resize</button>
+      </div>
+      <h5 style="color: red" [ngStyle]="{'display' : isFileListEmpty ? 'block' : 'none'}">The image list is currently empty, please add images in order to proceed. </h5>
+
+    </div>
+  </div>
+  <div [ngStyle]="{'display' : proceedFlag ? 'block' : 'none'}">
+    <div class="section">
+        <div class="table-responsive" style="width: 65%; overflow-x: inherit;
+        border: 2px solid #e8e9eb;">
+        <table class="table table-bordered" style="width: -webkit-fill-available">
+          <thead>
+            <colgroup>
+              <col style="width:50px; height: 30px;" />
+              <col style="width:30px; height: 30px" />
+              <col style="width:30px; height: 30px" />
+              <col style="width:30px; height: 30px" />
+            </colgroup>
+          </thead>
+          <tbody>
+            <tr>
+              <th style="height: 30px; width: 100px; background: #f4f7f7;" class="text-center">File Name</th>
+              <th style="height: 30px; width: 100px; background: #f4f7f7;" class="text-center">Size</th>
+              <th style="height: 30px; width: 100px; background: #f4f7f7;" class="text-center">Original (px)</th>
+              <th style="height: 30px; width: 100px; background: #f4f7f7;" class="text-center">New (px)</th>
+              <th style="height: 30px; width: 100px; background: #f4f7f7;" class="text-center">Action</th>
+            </tr>
+            <tr id="body-row">
+              <tr *ngFor="let file of fileList, let i = index">
+                <td style="height: 30px" class="text-center">{{file.name.slice(0,15)}}...</td>
+                <td style="height: 30px" class="text-center">{{file.size/1024 | number: '1.2-2'}}kB</td>
+                <td style="height: 30px" class="text-center">{{originalPixels[i]}}</td>
+                <td style="height: 30px" class="text-center">{{newPixels[i]}}</td>
+                <td style="height: 30px" class="text-center">x</td>
+              </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    
+
+    <div class="section">
+      <span class="step" style="vertical-align: middle">
+        <span style="font-size: 24px; line-height: 1.5" class="text-center">1</span>
+      </span>
+      <h3 style="display: inline; vertical-align: middle">
+        <span>Resize your Images</span>
+        <div class="section">
+            <label class="form-label" >RESIZE IMAGE</label>
+          <div class="select-resize">
+            <select class="form-control select-box" 
+            [(ngModel)]="selectedSize" #s 
+            (change)="chooseSize(s.value)">
+              <option selected class="select-option" *ngFor="let size of sizes" [ngValue]="size">{{size}}</option>
+            </select>
+            <div class="side-by-side-inputs" [ngStyle]="{'display' : customFlag ? 'flex' : 'none'}">
+              <div class="input-container">
+                <label>Width</label>
+                <div class="input-hasBorder">
+                  <input type="number" step="1" min="1">
+                </div>
+              </div>
+              <div class="input-container">
+                <label>Height</label>
+                <div class="input-hasBorder">
+                  <input type="number" step="1" min="1">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </h3>
+    </div>
+    <div class="section">
+      <span class="step" style="vertical-align: middle">
+        <span style="font-size: 24px; line-height: 1.5" class="text-center">2</span>
+      </span>
+      <h3 style="display: inline; vertical-align: middle">
+        <span>Save Images As</span>
+        <div class="section">
+            <div class="row">
+              <div class="col-md-5">
+                  <label class="form-label" >SELECT IMAGE QUALITY</label>
+                  <select class="form-control select-box"   
+                   [(ngModel)]="selectedQuality" #q (change)="chooseQuality(q.value)">
+                      <option selected class="select-option" *ngFor="let quality of qualities" [ngValue]="quality">{{quality}}</option>
+                    </select>
+              </div>
+              <div class=" col-md-offset-2 col-md-5">
+                  <label class="form-label" >SELECT IMAGE FORMAT</label>
+                  <select class="form-control select-box" 
+                  [(ngModel)]="selectedFormat" #f 
+                  (change)="chooseFormat(f.value)">
+                      <option selected class="select-option" *ngFor="let format of formats" [ngValue]="format">{{format}}</option>
+                  </select>
+              </div>
+            </div>
+
+        </div>
+      </h3>
+    </div>
+    <div class="section">
+      <button class=" btn-primary btn-square-blue pull-right" id="resize-image" (click)='resizeBtn()'>Resize Image</button>
+    </div>
+  </div>
+  <div class="section" id="final" hidden>
+      <div class="table-responsive" style="width: 65%; overflow-x: inherit;
+      border: 2px solid #e8e9eb;">
+      <table class="table table-bordered" style="width: -webkit-fill-available">
+        <thead>
+          <colgroup>
+            <col style="width:50px; height: 30px;" />
+            <col style="width:30px; height: 30px" />
+            <col style="width:30px; height: 30px" />
+            <col style="width:30px; height: 30px" />
+          </colgroup>
+        </thead>
+        <tbody>
+          <tr>
+            <th style="height: 30px; width: 100px; background: #f4f7f7;" class="text-center">File Name</th>
+            <th style="height: 30px; width: 100px; background: #f4f7f7;" class="text-center">File Size</th>
+            <th style="height: 30px; width: 100px; background: #f4f7f7;" class="text-center">Original (px)</th>
+            <th style="height: 30px; width: 100px; background: #f4f7f7;" class="text-center">New (px)</th>
+          </tr>
+          <tr id="body-row">
+            <tr *ngFor="let file of fileList, let i = index">
+              <td style="height: 30px" class="text-center">{{file.name.slice(0,15)}}...</td>
+              <td style="height: 30px" class="text-center">{{file.size/1024 | number: '1.2-2'}}kB</td>
+              <td style="height: 30px" class="text-center">{{originalPixels[i]}}</td>
+              <td style="height: 30px" class="text-center">{{newPixels[i]}}</td>
+            </tr>
+        </tbody>
+      </table>
+      <button style="margin-top:30px;" class=" btn-primary btn-square-blue pull-right" id="resize-image" (click)='downloadImages()'>Download Images</button>
+    </div>
+
+  </div>
+  <div class="ad">
+    <ins class="adsbygoogle styles__bannerAd__1WTrt" data-ad-client="ca-pub-7908993773401181" data-ad-format="auto" data-ad-slot="7634290200"
+      data-adsbygoogle-status="done" style="height: 90px;">
+      <ins id="aswift_1_expand" style="display:inline-table;border:none;height:90px;margin:0;padding:0;position:relative;visibility:visible;width:728px;background-color:transparent;">
+        <ins id="aswift_1_anchor" style="display:block;border:none;height:90px;margin:0;padding:0;position:relative;visibility:visible;width:728px;background-color:transparent;">
+        </ins>
+      </ins>
+    </ins>
+  </div>
+  <div class="content" id="footer">
+    <div class="section">
+      <h3>What is Batch Image Resize Tool?</h3>
+      <p>Imageresize.org provides a bulk/batch resizing tool to easily Resize, compress, or convert multiple images at once.
+        It is an online tool, so there is no software to download or install. You can upload up to 20 images at once using
+        the upload box above.</p>
+    </div>
+    <div class="two-sections">
+      <div class="section">
+        <h3>Batch image resize</h3>
+        <p>Upload multiple photos from the upload box above to start resizing them. You can resize all your photos as a percentage
+          of the original size or specify exact width and height.</p>
+      </div>
+      <div class="section">
+        <h3>Bulk image compressor</h3>
+        <p>Upload multiple images and compress them all at once using our image editor. You can choose a compression level or
+          simply specify the maximum file size you want.</p>
+      </div>
+    </div>
+    <div class="two-sections">
+      <div class="section">
+        <h3>
+          What is different in Bulk Tool?
+        </h3>
+        <p>Batch resize tool is designed to process multiple images at once. At this time, the bulk tool does not allow single
+          image editing (crop, flip, rotate, and image filters).</p>
+      </div>
+      <div class="section">
+        <h3>Bulk image converter</h3>
+        <p>Need to convert multiple images? Our image editor allows you to convert your images to any of the following file
+          types; jpg, png, gif, and bmp.</p>
+      </div>
+    </div>
+  </div>
+</div>
